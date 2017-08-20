@@ -7,7 +7,8 @@ jobs:
       - checkout
       - run: pwd
       - run: which php
-      - run: docker ps
+      - run: php -v
+      - run: sudo docker ps
       - run: cat /etc/hosts
       - deploy:
           name: "Deploy to Production"
