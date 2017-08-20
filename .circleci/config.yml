@@ -1,0 +1,20 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/php:7.1.8-browsers
+    steps:
+      - checkout
+      - run: pwd
+      - run: which php
+      - run: docker ps
+      - run: cat /etc/hosts
+      - deploy:
+        name: "Deploy to Production"
+        command: |
+          if [ "${CIRCLE_BRANCH}" == "master" ]; then
+            # deploying logic here
+            echo "deploying"
+          else
+            echo "not deploying"
+          fi
