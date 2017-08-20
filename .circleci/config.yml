@@ -5,6 +5,7 @@ jobs:
       - image: circleci/php:7.1.8-browsers
         environment:
           APP_URL: http://localhost
+          APP_ENV: testing
           APP_DEBUG: true
           APP_KEY: base64:/WoPNs10wRuzDcu1G+t5b0uzMmCWvygWcP80vJTyX28=
           DB_CONNECTION: mysql
