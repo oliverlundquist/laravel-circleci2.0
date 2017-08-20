@@ -10,11 +10,11 @@ jobs:
       - run: docker ps
       - run: cat /etc/hosts
       - deploy:
-        name: "Deploy to Production"
-        command: |
-          if [ "${CIRCLE_BRANCH}" == "master" ]; then
-            # deploying logic here
-            echo "deploying"
-          else
-            echo "not deploying"
-          fi
+          name: "Deploy to Production"
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              # deploying logic here
+              echo "deploying"
+            else
+              echo "not deploying"
+            fi
