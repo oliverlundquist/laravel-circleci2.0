@@ -2,19 +2,22 @@ version: 2
 jobs:
   build:
     docker:
-      #- image: circleci/php:7.1.8-browsers
-      - image: oliverlundquist/php7:latest
-      - image: oliverlundquist/nginx:latest
-      - image: mysql:5.7
-        environment:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: circleci
-      - image: selenium/standalone-chrome:latest
+      # - image: circleci/php:7.1.8-browsers
+      # - image: oliverlundquist/php7:latest
+      # - image: oliverlundquist/nginx:latest
+      # - image: mysql:5.7
+      #   environment:
+      #     MYSQL_ROOT_PASSWORD: root
+      #     MYSQL_DATABASE: circleci
+      # - image: selenium/standalone-chrome:latest
+      - image: docker/compose:1.15.0
     steps:
       - checkout
-      - run: pwd
-      - run: which php
-      - run: php -v
+      - run: docker-compose up -d
+      - run: docker exec -it project_php_1 php artisan
+      # - run: pwd
+      # - run: which php
+      # - run: php -v
       # - run: curl nginx
       # - run: wget --retry-connrefused --waitretry=5 -t 10 nginx
       # - run: wget --retry-connrefused --waitretry=5 -t 10 mysql
