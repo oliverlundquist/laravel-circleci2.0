@@ -18,6 +18,7 @@ jobs:
         environment:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: circleci
+      - image: selenium/standalone-chrome:latest
     steps:
       - run: sudo apt-get install -y zlib1g-dev
       - run: sudo apt-get install -y libzip-dev
