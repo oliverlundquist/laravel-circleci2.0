@@ -15,7 +15,10 @@ jobs:
       - run: pwd
       - run: which php
       - run: php -v
-      - run: sudo docker ps
+      - run: ping -c 3 nginx
+      - run: curl nginx
+      - run: ping -c 3 mysql
+      - run: ping -c 3 selenium
       - run: cat /etc/hosts
       - deploy:
           name: "Deploy to Production"
