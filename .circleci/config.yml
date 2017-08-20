@@ -18,6 +18,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: circleci
     steps:
+      - run: sudo pecl install zip && sudo docker-php-ext-enable zip
       - checkout
       - run: composer self-update
       - restore_cache:
