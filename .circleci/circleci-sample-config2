@@ -1,0 +1,88 @@
+defaults: &defaults
+  working_directory: ~/code
+  docker:
+    - image: brigad/brigad-base:5.0.2
+
+version: 2
+jobs:
+  run_tests:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+              - $CIRCLE_BRANCH
+              - master
+      - run:
+          name: Install dependencies
+          command: yarn --pure-lockfile
+      - save_cache:
+          key: $CIRCLE_BRANCH
+          paths:
+              - /usr/local/share/.cache/yarn
+      - save_cache:
+          key: master
+          paths:
+              - /usr/local/share/.cache/yarn
+      - run:
+          name: Run Eslint, Stylelint, Jest & Codecov
+          command: yarn test:ci
+      - store_artifacts:
+          path: ~/code/coverage/lcov-report
+          destination: Coverage
+      - store_test_results:
+          path: ~/code/junit
+      - persist_to_workspace:
+          root: /root/code
+          paths:
+            - .
+
+  deploy_staging:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: /root/code
+
+      - run:
+          name: Import GPG key
+          command: echo -n "$GPG_SECRET_KEY_BASE64" | base64 -d | gpg --allow-secret-key-import --import
+      - deploy:
+          command: |
+            if [ -z "$CIRCLE_PULL_REQUEST" ] ; then
+              chmod +x ./.build_scripts/build.sh
+              ./.build_scripts/build.sh staging
+            fi
+
+  deploy_production:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: /root/code
+
+      - run:
+          name: Import GPG key
+          command: echo -n "$GPG_SECRET_KEY_BASE64" | base64 -d | gpg --allow-secret-key-import --import
+      - deploy:
+          command: |
+            if [ -z "$CIRCLE_PULL_REQUEST" ] ; then
+              chmod +x ./.build_scripts/build.sh
+              ./.build_scripts/build.sh production
+            fi
+
+workflows:
+  version: 2
+  build:
+    jobs:
+    - run_tests
+    - deploy_staging:
+        requires:
+          - run_tests
+        filters:
+          branches:
+            only: master
+    - deploy_production:
+        requires:
+          - run_tests
+        filters:
+          branches:
+            only: production
