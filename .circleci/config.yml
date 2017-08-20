@@ -19,6 +19,7 @@ jobs:
           MYSQL_DATABASE: circleci
     steps:
       - run: sudo apt-get install -y zlib1g-dev
+      - run: sudo apt-get install -y libzip-dev
       - run: sudo docker-php-ext-install pdo_mysql
       - run: sudo docker-php-ext-install zip
       - run: sudo pecl install zip && sudo docker-php-ext-enable zip
