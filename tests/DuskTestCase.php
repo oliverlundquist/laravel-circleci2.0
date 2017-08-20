@@ -18,7 +18,7 @@ abstract class DuskTestCase extends BaseTestCase
      */
     public static function prepare()
     {
-        // static::startChromeDriver();
+        static::startChromeDriver();
     }
 
     /**
@@ -29,8 +29,8 @@ abstract class DuskTestCase extends BaseTestCase
     protected function driver()
     {
         return RemoteWebDriver::create(
-            // 'http://localhost:9515', DesiredCapabilities::chrome()
-            'http://selenium:4444/wd/hub', DesiredCapabilities::chrome()
+            'http://localhost:9515', DesiredCapabilities::chrome()
+            // 'http://localhost:4444/wd/hub', DesiredCapabilities::chrome()
         );
     }
 }
