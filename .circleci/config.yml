@@ -15,10 +15,10 @@ jobs:
       - run: pwd
       - run: which php
       - run: php -v
-      - run: ping -c 3 nginx
       - run: curl nginx
-      - run: ping -c 3 mysql
-      - run: ping -c 3 selenium
+      - run: wget --retry-connrefused --waitretry=5 -t 10 nginx
+      - run: wget --retry-connrefused --waitretry=5 -t 10 mysql
+      - run: wget --retry-connrefused --waitretry=5 -t 10 selenium
       - run: cat /etc/hosts
       - deploy:
           name: "Deploy to Production"
