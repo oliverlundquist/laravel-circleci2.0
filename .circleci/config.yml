@@ -2,7 +2,14 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/php:7.1.8-browsers
+      #- image: circleci/php:7.1.8-browsers
+      - image: oliverlundquist/nginx:latest
+      - image: oliverlundquist/php7:latest
+      - image: mysql:5.7
+        environment:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: circleci
+      - image: selenium/standalone-chrome:latest
     steps:
       - checkout
       - run: pwd
