@@ -20,11 +20,6 @@ jobs:
           MYSQL_DATABASE: circleci
       - image: selenium/standalone-chrome:latest
     steps:
-      - run: sudo apt-get install -y zlib1g-dev
-      - run: sudo apt-get install -y libzip-dev
-      - run: sudo docker-php-ext-install pdo_mysql
-      - run: sudo docker-php-ext-install zip
-      - run: sudo pecl install zip && sudo docker-php-ext-enable zip
       - checkout
       - run: composer self-update
       - restore_cache:
