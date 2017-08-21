@@ -21,6 +21,8 @@ jobs:
       - image: selenium/standalone-chrome:latest
     steps:
       - checkout
+      - run: curl -sS https://getcomposer.org/installer | php
+      - run: mv composer.phar /usr/local/bin/composer
       - run: composer self-update
       - restore_cache:
           keys:
