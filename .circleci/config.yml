@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/php:7.1.8-browsers
+      - image: oliverlundquist/php7:latest
         environment:
           APP_URL: http://localhost
           APP_ENV: testing
