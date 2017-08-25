@@ -38,7 +38,7 @@ jobs:
             - vendor
       - run: php artisan dusk
       - store_artifacts:
-          path: tests/Browser/screenshots
+          path: tests/Browser/screenshots/*.png
       - deploy:
           name: "Deploy to Production"
           command: |
