@@ -21,12 +21,17 @@ jobs:
       - image: selenium/standalone-chrome:latest
     steps:
       - checkout
+      - run: cat /etc/hosts
+      - run: ifconfig
+      - run: curl php
+      - run: curl mysql
+      - run: curl selenium
       - run: apt-get install -y zlib1g-dev libzip-dev
       - run: docker-php-ext-install zip
       - run: curl -sS https://getcomposer.org/installer | php
       - run: mv composer.phar /usr/local/bin/composer
       - run: composer self-update
-      - run: nohup php artisan serve &
+      - run: nohup php artisan serve --host=0.0.0.0 &
       - restore_cache:
           keys:
             - composer-v1-{{ checksum "composer.json" }}
@@ -38,7 +43,7 @@ jobs:
             - vendor
       - run: php artisan dusk
       - store_artifacts:
-          path: tests/Browser/screenshots/*.png
+          path: tests/Browser/screenshots
       - deploy:
           name: "Deploy to Production"
           command: |
