@@ -4,7 +4,7 @@ jobs:
     docker:
       - image: oliverlundquist/php7:latest
         environment:
-          APP_URL: http://127.0.0.1:8000
+          APP_URL: http://$(getent hosts | awk '{ print $1 }' | sed -n '$p'):8000
           APP_ENV: testing
           APP_DEBUG: true
           APP_KEY: base64:/WoPNs10wRuzDcu1G+t5b0uzMmCWvygWcP80vJTyX28=
@@ -21,11 +21,6 @@ jobs:
       - image: selenium/standalone-chrome:latest
     steps:
       - checkout
-      - run: cat /etc/hosts
-      - run: ifconfig
-      - run: curl php
-      - run: curl mysql
-      - run: curl selenium
       - run: apt-get install -y zlib1g-dev libzip-dev
       - run: docker-php-ext-install zip
       - run: curl -sS https://getcomposer.org/installer | php
