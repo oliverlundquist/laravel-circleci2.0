@@ -37,6 +37,8 @@ jobs:
           paths:
             - vendor
       - run: php artisan dusk
+      - store_artifacts:
+          path: tests/Browser/screenshots
       - deploy:
           name: "Deploy to Production"
           command: |
