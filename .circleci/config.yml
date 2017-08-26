@@ -31,11 +31,6 @@ jobs:
           keys:
             - composer-v1-{{ checksum "composer.json" }}
       - run: composer install -o -n --prefer-dist
-      # - run:
-      #     command: |
-      #       if [ ! -d vendorz ]; then
-      #         composer install -o -n --prefer-dist
-      #       fi
       - save_cache:
           key: composer-v1-{{ checksum "composer.json" }}
           paths:
