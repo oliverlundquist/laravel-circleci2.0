@@ -16,7 +16,7 @@ jobs:
           DB_PASSWORD: root
       - image: oliverlundquist/nginx:latest
         environment:
-          FASTCGI_PASS_HOST: "$(getent hosts | awk '{ print $1 }' | sed -n '$p')"
+          FASTCGI_PASS_HOST: 0.0.0.0
       - image: mysql:5.7
         environment:
           MYSQL_ROOT_PASSWORD: root
@@ -28,7 +28,6 @@ jobs:
       - run: curl -sS https://getcomposer.org/installer | php
       - run: mv composer.phar /usr/local/bin/composer
       - run: composer self-update
-      - run: nohup php artisan serve --host=0.0.0.0 &
       - restore_cache:
           keys:
             - composer-v1-{{ checksum "composer.json" }}
@@ -38,6 +37,8 @@ jobs:
           key: composer-v1-{{ checksum "composer.json" }}
           paths:
             - vendor
+      # - run: nohup php artisan serve --host=0.0.0.0 &
+      - run: nohup /root/run-script.sh php-fpm &
       - run: php artisan dusk
       - store_artifacts:
           path: tests/Browser/screenshots
