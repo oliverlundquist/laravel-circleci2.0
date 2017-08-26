@@ -15,6 +15,7 @@ jobs:
           DB_USERNAME: root
           DB_PASSWORD: root
       - image: oliverlundquist/nginx:latest
+        environment:
           FASTCGI_PASS_HOST: 0.0.0.0
       - image: mysql:5.7
         environment:
