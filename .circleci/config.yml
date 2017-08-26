@@ -25,6 +25,8 @@ jobs:
     steps:
       - checkout
       - run: php -v
+      - run: ls -lah /var/app/current/storage/logs/
+      - run: cat /usr/local/etc/php/conf.d/newrelic.ini | grep REPLACE_WITH_REAL_KEY
       - run: php-fpm
       - run: curl -sS https://getcomposer.org/installer | php
       - run: mv composer.phar /usr/local/bin/composer
