@@ -40,7 +40,10 @@ jobs:
           key: composer-v1-{{ checksum "composer.json" }}
           paths:
             - vendor
-      - run: php artisan serve --host=0.0.0.0 --port=9000
+      - run: php artisan serve --host=0.0.0.0 --port=9000 &
+      - run: ps aux
+      - run: nohup php artisan serve --host=0.0.0.0 --port=9000 &
+      - run: ps aux
       - run: php artisan dusk
       - store_artifacts:
           path: tests/Browser/screenshots
