@@ -15,7 +15,6 @@ jobs:
           DB_USERNAME: root
           DB_PASSWORD: root
       - image: oliverlundquist/nginx:latest
-        entrypoint: "while ! nc 0.0.0.0 9000; do >&2 echo 'Waiting for: 0.0.0.0:9000'; sleep 1; done;"
       #   environment:
       #     FASTCGI_PASS_HOST: 0.0.0.0
       - image: mysql:5.7
@@ -29,6 +28,7 @@ jobs:
       - checkout
       # - run: /root/run-script.sh php-fpm -D
       - run: /root/run-script.sh
+      - run: nohup php artisan serve --host=0.0.0.0 --port=9000 &
       - run: curl -sS https://getcomposer.org/installer | php
       - run: mv composer.phar /usr/local/bin/composer
       - run: composer self-update
