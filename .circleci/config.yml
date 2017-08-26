@@ -24,6 +24,7 @@ jobs:
     <<: *docker
     steps:
       - checkout
+      - run: pwd
       - run: curl -sS https://getcomposer.org/installer | php
       - run: mv composer.phar /usr/local/bin/composer
       - run: composer self-update
@@ -44,6 +45,7 @@ jobs:
     <<: *docker
     steps:
       - checkout
+      - run: pwd
       - restore_cache:
           keys:
             - composer-v1-{{ checksum "composer.json" }}
@@ -62,6 +64,7 @@ jobs:
     <<: *docker
     steps:
       - checkout
+      - run: pwd
       - restore_cache:
           keys:
             - composer-v1-{{ checksum "composer.json" }}
