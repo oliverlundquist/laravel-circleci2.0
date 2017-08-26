@@ -79,10 +79,10 @@ workflows:
           requires:
             - setup
       - teardown:
+          requires:
             - chrome
             - firefox
       - deploy:
           requires:
             - chrome
             - firefox
-
