@@ -23,6 +23,7 @@ jobs:
           MYSQL_DATABASE: circleci
       - image: selenium/standalone-chrome:latest
     steps:
+      - run: apt-get install -y ssh-client
       - checkout
       - run: php -v
       - run: ls -lah /var/app/current/storage/logs/
