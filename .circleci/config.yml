@@ -32,7 +32,7 @@ jobs:
             - composer-v1-{{ checksum "composer.json" }}
       - run:
           command: |
-            if [ ! -d vendor ]; then
+            if [ ! -d vendorz ]; then
               composer install -o -n --prefer-dist
             fi
       - save_cache:
