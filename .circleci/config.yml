@@ -25,6 +25,7 @@ jobs:
     steps:
       - checkout
       - run: php -v
+      - run: php-fpm
       - run: curl -sS https://getcomposer.org/installer | php
       - run: mv composer.phar /usr/local/bin/composer
       - run: composer self-update
