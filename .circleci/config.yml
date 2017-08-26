@@ -27,8 +27,7 @@ jobs:
       - run: apt-get install -y git
       - checkout
       # - run: /root/run-script.sh php-fpm -D
-      - run: /root/run-script.sh
-      - run: php artisan serve --host=0.0.0.0 --port=9000
+      # - run: /root/run-script.sh
       - run: curl -sS https://getcomposer.org/installer | php
       - run: mv composer.phar /usr/local/bin/composer
       - run: composer self-update
@@ -41,6 +40,7 @@ jobs:
           key: composer-v1-{{ checksum "composer.json" }}
           paths:
             - vendor
+      - run: php artisan serve --host=0.0.0.0 --port=9000
       - run: php artisan dusk
       - store_artifacts:
           path: tests/Browser/screenshots
