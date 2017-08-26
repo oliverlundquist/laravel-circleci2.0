@@ -17,9 +17,9 @@ class ExampleTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/')
-                    ->screenshot('first stage')
+                    ->screenshot('first stage' . microtime(true))
                     ->assertSee('Laravel')
-                    ->screenshot('second stage');
+                    ->screenshot('second stage' . microtime(true));
         });
     }
 }

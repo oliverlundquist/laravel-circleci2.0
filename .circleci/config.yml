@@ -38,6 +38,14 @@ jobs:
           background: true
       - run: php artisan dusk
 
+  firefox:
+    <<: *defaults
+    steps:
+      - run:
+          command: php artisan serve --host=0.0.0.0 --port=9000
+          background: true
+      - run: php artisan dusk
+
   teardown:
     <<: *defaults
     steps:
@@ -64,13 +72,16 @@ workflows:
   build_accept_deploy:
     jobs:
       - setup
-      - test_in_chrome:
+      - chrome:
           requires:
             - setup
-      - test_in_chrome_2:
+      - firefox:
           requires:
             - setup
+      - teardown:
+            - chrome
+            - firefox
       - deploy:
           requires:
-            - test_in_chrome
-            - test_in_chrome_2
+            - chrome
+            - firefox
