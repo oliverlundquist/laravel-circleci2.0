@@ -16,7 +16,7 @@ jobs:
           DB_PASSWORD: root
       - image: oliverlundquist/nginx:latest
         environment:
-          FASTCGI_PASS_HOST: 0.0.0.0
+          FASTCGI_PASS_HOST: $(getent hosts | awk '{ print $1 }' | sed -n '$p')
       - image: mysql:5.7
         environment:
           MYSQL_ROOT_PASSWORD: root
