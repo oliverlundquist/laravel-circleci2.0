@@ -1,7 +1,7 @@
 {
     "name": "oliverlundquist/laravel-circleci2.0",
     "description": "CircleCI 2.0 Playground",
-    "keywords": ["circleci", "ci"],
+    "keywords": ["circleci", "ci", "somethingelse"],
     "license": "MIT",
     "type": "project",
     "require": {
