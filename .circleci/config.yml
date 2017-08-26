@@ -4,7 +4,7 @@ jobs:
     docker:
       - image: oliverlundquist/php7:latest
         environment:
-          APP_URL: http://0.0.0.0
+          APP_URL: http://0.0.0.0:9000
           APP_ENV: testing
           APP_DEBUG: true
           APP_KEY: base64:/WoPNs10wRuzDcu1G+t5b0uzMmCWvygWcP80vJTyX28=
@@ -14,9 +14,9 @@ jobs:
           DB_DATABASE: circleci
           DB_USERNAME: root
           DB_PASSWORD: root
-      - image: oliverlundquist/nginx:latest
-        environment:
-          FASTCGI_PASS_HOST: 0.0.0.0
+      # - image: oliverlundquist/nginx:latest
+      #   environment:
+      #     FASTCGI_PASS_HOST: 0.0.0.0
       - image: mysql:5.7
         environment:
           MYSQL_ROOT_PASSWORD: root
@@ -26,7 +26,7 @@ jobs:
     steps:
       - run: apt-get install -y git
       - checkout
-      - run: /root/run-script.sh php-fpm -D
+      # - run: /root/run-script.sh php-fpm -D
       - run: curl -sS https://getcomposer.org/installer | php
       - run: mv composer.phar /usr/local/bin/composer
       - run: composer self-update
@@ -39,6 +39,7 @@ jobs:
           key: composer-v1-{{ checksum "composer.json" }}
           paths:
             - vendor
+      - run: nohup php artisan serve --host=0.0.0.0 --port=9000 &
       - run: php artisan dusk
       - store_artifacts:
           path: tests/Browser/screenshots
