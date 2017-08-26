@@ -35,7 +35,7 @@ jobs:
           key: composer-v1-{{ checksum "composer.json" }}
           paths:
             - vendor
-      - run: APP_URL=http://$(getent hosts | awk '{ print $1 }' | sed -n '$p'):8000 php artisan dusk
+      - run: php artisan dusk
       - store_artifacts:
           path: tests/Browser/screenshots
       - deploy:
