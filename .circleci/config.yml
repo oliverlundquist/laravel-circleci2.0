@@ -25,26 +25,30 @@ jobs:
     steps:
       - run: apt-get install -y git
       - checkout
-      - run: /root/run-script.sh php-fpm -D
+      - run: touch storage/logs/laravel.log
+      - run: chmod 664 storage/logs/laravel.log
+      # - run: /root/run-script.sh php-fpm -D
       # - run: /root/run-script.sh
       - run: curl -sS https://getcomposer.org/installer | php
       - run: mv composer.phar /usr/local/bin/composer
       - run: composer self-update
-      - restore_cache:
-          keys:
-            - composer-v1-{{ checksum "composer.json" }}
-            - composer-v1-
+      # - restore_cache:
+      #     keys:
+      #       - composer-v1-{{ checksum "composer.json" }}
+      #       - composer-v1-
       - run: composer install -n --prefer-dist
-      - save_cache:
-          key: composer-v1-{{ checksum "composer.json" }}
-          paths:
-            - vendor
-      #- run: php artisan serve --host=0.0.0.0 --port=9000 &
+      # - save_cache:
+      #     key: composer-v1-{{ checksum "composer.json" }}
+      #     paths:
+      #       - vendor
+      # - run: php artisan serve --host=0.0.0.0 --port=9000 &
+      # - run: ps
+      # - run: ss -nlp
+      - run:
+          command: php artisan serve --host=0.0.0.0 --port=9000
+          background: true
       - run: ps
       - run: ss -nlp
-      #- run: nohup php artisan serve --host=0.0.0.0 --port=9000 &
-      #- run: ps
-      #- run: ss -nlp
       - run: php artisan dusk
       - store_artifacts:
           path: tests/Browser/screenshots
