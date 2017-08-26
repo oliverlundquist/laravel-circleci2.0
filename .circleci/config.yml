@@ -31,7 +31,13 @@ version: 2
 jobs:
   chrome:
     <<: *docker
-      <<: *composer
+    steps:
+      - run: apt-get install -y git
+      - checkout
+      - run: curl -sS https://getcomposer.org/installer | php
+      - run: mv composer.phar /usr/local/bin/composer
+      - run: composer self-update
+      - run: composer install -n --prefer-dist
       - run:
           command: php artisan serve --host=0.0.0.0 --port=9000
           background: true
@@ -39,7 +45,13 @@ jobs:
 
   firefox:
     <<: *docker
-      <<: *composer
+    steps:
+      - run: apt-get install -y git
+      - checkout
+      - run: curl -sS https://getcomposer.org/installer | php
+      - run: mv composer.phar /usr/local/bin/composer
+      - run: composer self-update
+      - run: composer install -n --prefer-dist
       - run:
           command: php artisan serve --host=0.0.0.0 --port=9000
           background: true
