@@ -28,7 +28,7 @@ jobs:
       - checkout
       # - run: /root/run-script.sh php-fpm -D
       - run: /root/run-script.sh
-      - run: nohup php artisan serve --host=0.0.0.0 --port=9000 &
+      - run: php artisan serve --host=0.0.0.0 --port=9000
       - run: curl -sS https://getcomposer.org/installer | php
       - run: mv composer.phar /usr/local/bin/composer
       - run: composer self-update
