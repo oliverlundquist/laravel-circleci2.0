@@ -22,7 +22,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: circleci
       - image: selenium/standalone-chrome:latest
-        entrypoint: "while true; do curl http://0.0.0.0:9000; sleep 2; done"
+        entrypoint: while true; do curl http://0.0.0.0:9000; sleep 2; done
     working_directory: /var/app/current
     steps:
       - run: apt-get install -y git
