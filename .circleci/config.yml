@@ -27,39 +27,55 @@ composer: &composer
       - run: composer self-update
       - run: composer install -n --prefer-dist
 
+      - persist_to_workspace:
+          # Must be an absolute path, or relative path from working_directory
+          root: workspace
+          # Must be relative path from root
+          paths:
+            - echo-output
+
 version: 2
 jobs:
-  chrome:
+  composer:
     <<: *docker
     steps:
-      - run: apt-get install -y git
-      - checkout
       - run: curl -sS https://getcomposer.org/installer | php
       - run: mv composer.phar /usr/local/bin/composer
       - run: composer self-update
+      - persist_to_workspace:
+          root: /usr/local/bin
+          paths:
+            - composer
+
+  chrome:
+    <<: *docker
+    steps:
+      - attach_workspace:
+          at: /usr/local/bin
+      - run: apt-get install -y git
+      - checkout
       - run: composer install -n --prefer-dist
       - run:
           command: php artisan serve --host=0.0.0.0 --port=9000
           background: true
       - run: php artisan dusk
+      - store_artifacts:
+          path: tests/Browser/screenshots
+      - store_artifacts:
+          path: storage/logs
 
   firefox:
     <<: *docker
     steps:
+      - attach_workspace:
+          at: /usr/local/bin
       - run: apt-get install -y git
       - checkout
-      - run: curl -sS https://getcomposer.org/installer | php
-      - run: mv composer.phar /usr/local/bin/composer
-      - run: composer self-update
       - run: composer install -n --prefer-dist
       - run:
           command: php artisan serve --host=0.0.0.0 --port=9000
           background: true
       - run: php artisan dusk
-
-  teardown:
-    <<: *docker
-    steps:
       - store_artifacts:
           path: tests/Browser/screenshots
       - store_artifacts:
@@ -82,12 +98,13 @@ workflows:
   version: 2
   test_teardown_deploy:
     jobs:
-      - chrome
-      - firefox
-      - teardown:
+      - composer
+      - chrome:
           requires:
-            - chrome
-            - firefox
+            - composer
+      - firefox:
+          requires:
+            - composer
       - deploy:
           requires:
             - chrome
