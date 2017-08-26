@@ -18,30 +18,23 @@ docker: &docker
         MYSQL_DATABASE: circleci
     - image: selenium/standalone-chrome:latest
 
-composer: &composer
+version: 2
+jobs:
+  build:
+    <<: *docker
     steps:
-      - run: apt-get install -y git
       - checkout
       - run: curl -sS https://getcomposer.org/installer | php
       - run: mv composer.phar /usr/local/bin/composer
       - run: composer self-update
-      - run: composer install -n --prefer-dist
-
-      - persist_to_workspace:
-          # Must be an absolute path, or relative path from working_directory
-          root: workspace
-          # Must be relative path from root
+      - restore_cache:
+          keys:
+            - composer-v1-{{ checksum "composer.json" }}
+      - run: composer install -o -n --prefer-dist
+      - save_cache:
+          key: composer-v1-{{ checksum "composer.json" }}
           paths:
-            - echo-output
-
-version: 2
-jobs:
-  composer:
-    <<: *docker
-    steps:
-      - run: curl -sS https://getcomposer.org/installer | php
-      - run: mv composer.phar /usr/local/bin/composer
-      - run: composer self-update
+            - vendor
       - persist_to_workspace:
           root: /usr/local/bin
           paths:
@@ -50,11 +43,12 @@ jobs:
   chrome:
     <<: *docker
     steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - composer-v1-{{ checksum "composer.json" }}
       - attach_workspace:
           at: /usr/local/bin
-      - run: apt-get install -y git
-      - checkout
-      - run: composer install -n --prefer-dist
       - run:
           command: php artisan serve --host=0.0.0.0 --port=9000
           background: true
@@ -67,11 +61,12 @@ jobs:
   firefox:
     <<: *docker
     steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - composer-v1-{{ checksum "composer.json" }}
       - attach_workspace:
           at: /usr/local/bin
-      - run: apt-get install -y git
-      - checkout
-      - run: composer install -n --prefer-dist
       - run:
           command: php artisan serve --host=0.0.0.0 --port=9000
           background: true
@@ -84,6 +79,10 @@ jobs:
   deploy:
     <<: *docker
     steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - composer-v1-{{ checksum "composer.json" }}
       - deploy:
           name: "Deploy to Production"
           command: |
@@ -98,13 +97,13 @@ workflows:
   version: 2
   test_teardown_deploy:
     jobs:
-      - composer
+      - build
       - chrome:
           requires:
-            - composer
+            - build
       - firefox:
           requires:
-            - composer
+            - build
       - deploy:
           requires:
             - chrome
