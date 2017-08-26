@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "name": "oliverlundquist/laravel-circleci2.0",
+    "description": "CircleCI 2.0 Playground",
+    "keywords": ["circleci", "ci"],
     "license": "MIT",
     "type": "project",
     "require": {
