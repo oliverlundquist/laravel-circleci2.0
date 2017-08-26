@@ -15,7 +15,7 @@ jobs:
           DB_USERNAME: root
           DB_PASSWORD: root
       - image: oliverlundquist/nginx:latest
-        entrypoint: while ! nc 0.0.0.0 9000; do >&2 echo 'Waiting for: 0.0.0.0:9000'; sleep 1; done;
+        entrypoint: "while ! nc 0.0.0.0 9000; do >&2 echo 'Waiting for: 0.0.0.0:9000'; sleep 1; done;"
       #   environment:
       #     FASTCGI_PASS_HOST: 0.0.0.0
       - image: mysql:5.7
