@@ -21,8 +21,7 @@ jobs:
       - image: selenium/standalone-chrome:latest
     steps:
       - checkout
-      - run: apt-get install -y zlib1g-dev libzip-dev
-      - run: docker-php-ext-install zip
+      - run: php -v
       - run: curl -sS https://getcomposer.org/installer | php
       - run: mv composer.phar /usr/local/bin/composer
       - run: composer self-update
