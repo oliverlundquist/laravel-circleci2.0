@@ -22,11 +22,10 @@ jobs:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: circleci
       - image: selenium/standalone-chrome:latest
-    working_directory: /var/app/current
     steps:
       - run: apt-get install -y git
       - checkout
-      # - run: /root/run-script.sh php-fpm -D
+      - run: /root/run-script.sh php-fpm -D
       # - run: /root/run-script.sh
       - run: curl -sS https://getcomposer.org/installer | php
       - run: mv composer.phar /usr/local/bin/composer
@@ -40,12 +39,12 @@ jobs:
           key: composer-v1-{{ checksum "composer.json" }}
           paths:
             - vendor
-      - run: php artisan serve --host=0.0.0.0 --port=9000 &
+      #- run: php artisan serve --host=0.0.0.0 --port=9000 &
       - run: ps
       - run: ss -nlp
-      - run: nohup php artisan serve --host=0.0.0.0 --port=9000 &
-      - run: ps
-      - run: ss -nlp
+      #- run: nohup php artisan serve --host=0.0.0.0 --port=9000 &
+      #- run: ps
+      #- run: ss -nlp
       - run: php artisan dusk
       - store_artifacts:
           path: tests/Browser/screenshots
