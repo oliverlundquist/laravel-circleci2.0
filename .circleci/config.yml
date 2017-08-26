@@ -19,6 +19,7 @@ docker: &docker
     - image: selenium/standalone-chrome:latest
 
 composer: &composer
+    steps:
       - run: apt-get install -y git
       - checkout
       - run: curl -sS https://getcomposer.org/installer | php
@@ -30,7 +31,6 @@ version: 2
 jobs:
   chrome:
     <<: *docker
-    steps:
       <<: *composer
       - run:
           command: php artisan serve --host=0.0.0.0 --port=9000
@@ -39,7 +39,6 @@ jobs:
 
   firefox:
     <<: *docker
-    steps:
       <<: *composer
       - run:
           command: php artisan serve --host=0.0.0.0 --port=9000
@@ -69,7 +68,7 @@ jobs:
 
 workflows:
   version: 2
-  build_accept_deploy:
+  test_teardown_deploy:
     jobs:
       - chrome
       - firefox
