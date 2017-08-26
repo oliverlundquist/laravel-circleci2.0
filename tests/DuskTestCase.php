@@ -3,12 +3,13 @@
 namespace Tests;
 
 use Laravel\Dusk\TestCase as BaseTestCase;
+use Tests\Traits\RunsWebServer;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 
 abstract class DuskTestCase extends BaseTestCase
 {
-    use CreatesApplication;
+    use CreatesApplication, RunsWebServer;
 
     /**
      * Prepare for Dusk test execution.
@@ -18,6 +19,7 @@ abstract class DuskTestCase extends BaseTestCase
      */
     public static function prepare()
     {
+        static::startWebServer();
         // static::startChromeDriver();
     }
 
