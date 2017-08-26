@@ -27,6 +27,7 @@ jobs:
       - checkout
       - run: touch storage/logs/laravel.log
       - run: chmod 664 storage/logs/laravel.log
+      - run: echo 'hello' > storage/logs/laravel.log
       # - run: /root/run-script.sh php-fpm -D
       # - run: /root/run-script.sh
       - run: curl -sS https://getcomposer.org/installer | php
