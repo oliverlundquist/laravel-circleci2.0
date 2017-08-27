@@ -78,6 +78,8 @@
             @endif
 
             <div class="content">
+                <div>Browsing with: {{ app('request')->header('User-Agent') }}</div>
+
                 <div class="title m-b-md">
                     Laravel
                 </div>
