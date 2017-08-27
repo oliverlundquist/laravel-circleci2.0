@@ -129,7 +129,7 @@ jobs:
 
 workflows:
   version: 2
-  test_teardown_deploy:
+  build_test_deploy:
     jobs:
       - build
       - chrome:
