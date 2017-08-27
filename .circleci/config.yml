@@ -22,9 +22,6 @@ jobs:
     docker:
       - image: oliverlundquist/php7:latest
         <<: *php_environment
-      - image: mysql:5.7
-        <<: *mysql_environment
-      - image: selenium/standalone-chrome:latest
     steps:
       - checkout
       - run: curl -sS https://getcomposer.org/installer | php
@@ -60,7 +57,7 @@ jobs:
       - run:
           command: php artisan serve --host=0.0.0.0 --port=9000
           background: true
-      - run: php artisan dusk
+      - run: TEST_BROWSER=chrome php artisan dusk
       - store_artifacts:
           path: tests/Browser/screenshots
       - store_artifacts:
@@ -83,7 +80,29 @@ jobs:
       - run:
           command: php artisan serve --host=0.0.0.0 --port=9000
           background: true
-      - run: php artisan dusk
+      - run: TEST_BROWSER=firefox php artisan dusk
+      - store_artifacts:
+          path: tests/Browser/screenshots
+      - store_artifacts:
+          path: storage/logs
+
+  ie:
+    docker:
+      - image: oliverlundquist/php7:latest
+        <<: *php_environment
+      - image: mysql:5.7
+        <<: *mysql_environment
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - composer-v1-{{ checksum "composer.json" }}
+      - attach_workspace:
+          at: /usr/local/bin
+      - run:
+          command: php artisan serve --host=0.0.0.0 --port=9000
+          background: true
+      - run: TEST_BROWSER=IE php artisan dusk
       - store_artifacts:
           path: tests/Browser/screenshots
       - store_artifacts:
@@ -93,9 +112,6 @@ jobs:
     docker:
       - image: oliverlundquist/php7:latest
         <<: *php_environment
-      - image: mysql:5.7
-        <<: *mysql_environment
-      - image: selenium/standalone-chrome:latest
     steps:
       - checkout
       - restore_cache:
@@ -122,7 +138,11 @@ workflows:
       - firefox:
           requires:
             - build
+      - ie:
+          requires:
+            - build
       - deploy:
           requires:
             - chrome
             - firefox
+            - ie

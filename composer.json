@@ -10,6 +10,7 @@
         "laravel/tinker": "~1.0"
     },
     "require-dev": {
+        "browserstack/browserstack-local": "^1.1",
         "fzaninotto/faker": "~1.4",
         "laravel/dusk": "^1.1",
         "mockery/mockery": "0.9.*",

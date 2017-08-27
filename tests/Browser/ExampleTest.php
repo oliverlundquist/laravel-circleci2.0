@@ -15,7 +15,6 @@ class ExampleTest extends DuskTestCase
      */
     public function testBasicExample()
     {
-        dd(env('MYVAR'));
         $this->browse(function (Browser $browser) {
             $browser->visit('/')
                     ->screenshot('first stage' . microtime(true))
