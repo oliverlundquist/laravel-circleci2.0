@@ -76,7 +76,7 @@ abstract class DuskTestCase extends BaseTestCase
             'os'                   => 'Windows',
             'os_version'           => '10',
             'browser'              => 'IE',
-            'browser_version'      => '11',
+            'browser_version'      => '15',
             'resolution'           => '1024x768'
         ];
 
